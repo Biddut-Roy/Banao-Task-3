@@ -5,14 +5,18 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 const app = express();
+// parser
+app.use(bodyParser.json());
+app.use(cookieParser());
+
 const users = [];
 const SECRET_KEY =
   "fa6fdaa9c1b0c424051431aaf7d3ecb137d036f264ca70d9b3374d47b504daf6109ce0cc7fe6ae1a1948585b05df2584ac37e064fcf09096a1e33d421f2126a7"; //change your secrete code
 
 // Dummy data
 let posts = [
-  { text: "Post 1", likes: 0, comments: [], email: "jack@gmail.com" },
-  { text: "Post 2", likes: 0, comments: [], email: "jack1@gmail.com" },
+  { id: 1, text: "Post 1", likes: 0, comments: [], email: "jack@gmail.com" },
+  { id: 2, text: "Post 2", likes: 0, comments: [], email: "jack1@gmail.com" },
 ];
 
 // Middleware to authenticate JWT
@@ -38,9 +42,7 @@ const verifyToken = (req, res, next) => {
 // Register API
 app.post("/register", async (req, res) => {
   const { email, password, username } = req.body;
-
   console.log(req.body);
-
   const existingUser = users.find((user) => user.email === email);
   if (existingUser) {
     return res.status(409).json({ error: "User already exists" });
@@ -77,7 +79,7 @@ app.post("/login", async (req, res) => {
     sameSite: "none",
     secure: true,
   });
-  res.status(200).json({ message: "User successfully logged in" });
+  res.status(200).json({ message: `User successfully logged in` });
 });
 
 // Forgot Password API
@@ -163,7 +165,7 @@ app.post("/posts/:id/comments", verifyToken, (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
