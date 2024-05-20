@@ -1,2 +1,4 @@
--- clone a code then 
--- install a all dependency then start a server : npm run dev
+## Start server:
+- npm i
+- npm run dev
+
